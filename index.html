@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="index.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IoT Simulator</title>
+  </head>
+  <body>
+    <h1>IOT Sensor Dashboard</h1>
+
+    <button>Create Sensor</button>
+    <button>List Sensors</button>
+
+    <form id="createSensorForm" action="">
+      <input
+        id="sensorId"
+        name="sensorId"
+        type="text"
+        placeholder="sensor ID" />
+
+      <select name="type" id="type">
+        <option value="Light">Light</option>
+        <option value="Temperature">Temperature</option>
+      </select>
+
+      <input
+        type="number"
+        name="interval"
+        id="interval"
+        placeholder="Interval (ms)" />
+      <button id="formSubmit">Create</button>
+    </form>
+
+    <h2>Existing Sensors</h2>
+    <div id="sensorList"></div>
+  </body>
+
+  <script src="./app.js"></script>
+</html>
