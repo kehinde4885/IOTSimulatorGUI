@@ -7,3 +7,83 @@ select,
 button {
   margin: 5px;
 }
+
+h1 {
+  font-weight: normal;
+}
+
+.sensorList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.lightSensor {
+  display: flex;
+  align-items: center;
+  gap: 38px;
+  padding: 8px;
+  background-color: #f3eded;
+  border-radius: 0;
+  max-width: fit-content;
+}
+
+.lightSensor .sensor-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: "Abel", sans-serif;
+  color: #000;
+}
+
+.lightSensor .sensor-id {
+  font-size: 16px;
+  margin: 0;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.lightSensor .sensor-type {
+  font-size: 12px;
+  margin: 0;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.lightSensor .sensor-status {
+  font-size: 12px;
+  margin: 0;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.lightSensor .sensor-interval {
+  font-size: 8px;
+  margin: 0;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.lightSensor .sensor-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sensor-button {
+  background-color: #f57272;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 4px;
+  font-family: "Overpass", sans-serif;
+  font-weight: 900;
+  font-size: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.sensor-button.on {
+  background-color: #72f57b;
+}

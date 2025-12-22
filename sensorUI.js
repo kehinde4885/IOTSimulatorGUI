@@ -2,17 +2,29 @@ import { updateLightSensor } from "./apifunctions.js";
 
 class LightSensorUI {
   render(sensor) {
-    const div = document.createElement("div");
-    const p = document.createElement("p");
-    const p2 = document.createElement("p");
+    const lightSensordiv = document.createElement("div");
+    const sensorInfo = document.createElement("div");
+    const buttonWrapper = document.createElement("div");
     const button = document.createElement("button");
     const button2 = document.createElement("button");
 
-    div.className = "sensor";
-    div.append(p, p2, button, button2);
+    lightSensordiv.className = "lightSensor";
+    sensorInfo.className = "sensor-info";
+    buttonWrapper.className = "sensor-actions";
+    button.className = "sensor-button";
+    button2.className = "sensor-button";
 
-    p.innerHTML = `${sensor.sensorId} (${sensor.type}) -${sensor.interval}ms`;
-    p2.innerHTML = `Status: ${sensor.value}`;
+    lightSensordiv.appendChild(sensorInfo);
+    lightSensordiv.appendChild(buttonWrapper);
+    buttonWrapper.appendChild(button2);
+    buttonWrapper.appendChild(button);
+
+    sensorInfo.innerHTML = `     <div class="sensor-info">
+        <p class="sensor-id">Sensor ${sensor.sensorId}</p>
+        <p class="sensor-type">Type: ${sensor.type}</p>
+        <p class="sensor-status">Status: ${sensor.value}</p>
+        <p class="sensor-interval">Interval: ${sensor.interval}ms</p>
+      </div>`;
 
     button.addEventListener("click", () => {
       deleteSensor(sensor.sensorId);
@@ -23,9 +35,14 @@ class LightSensorUI {
       updateLightSensor(sensor.sensorId);
     });
 
-    button2.innerHTML = `${sensor.value === "On" ? "Turn Off" : "Turn ON"}`;
+    if (sensor.value === "On") {
+      button2.innerHTML = "Turn OFF";
+    } else {
+      button2.classList.add('on');
+      button2.innerHTML = "Turn ON";
+    }
 
-    return div;
+    return lightSensordiv;
   }
 }
 
