@@ -1,23 +1,22 @@
+import getSensorUIStrategy from "./sensorUI.js";
+
+const API = "http://localhost:3000/api/sensors";
+
 async function loadSensors() {
   const res = await fetch(API);
   const sensors = await res.json();
 
+  //log sensor array
   console.log(sensors);
 
+  //Clear existing html
   const list = document.getElementById("sensorList");
   list.innerHTML = "";
 
   sensors.forEach((sensor) => {
-    const div = document.createElement("div");
-    div.className = "sensor";
-    div.innerHTML = `
-    <p> ${sensor.sensorId} (${sensor.type}) -${sensor.interval}ms</p>
-    <p>Status: ${sensor.value} </p> 
-    <button onclick="deleteSensor('${sensor.sensorId}')">Delete </button>
-    <button onclick="updateLightSensor('${sensor.sensorId}')"> ${
-      sensor.value === "On" ? "Turn Off" : "Turn ON"
-    } </button>
-    `;
+    const strategy = getSensorUIStrategy(sensor.type);
+
+    const div = strategy.render(sensor);
 
     list.appendChild(div);
   });
@@ -54,7 +53,6 @@ async function deleteSensor(id) {
   loadSensors();
 }
 
-
 async function updateLightSensor(id) {
   try {
     const response = await fetch(`${API}/update/${id}`, {
@@ -72,12 +70,8 @@ async function updateLightSensor(id) {
     console.error(error.message);
   }
 
-  loadSensors()
+  loadSensors();
 }
 
 
-function sensorGUI() {
-  
-}
-
-export { loadSensors, deleteSensor, createSensor , updateLightSensor};
+export { loadSensors, deleteSensor, createSensor, updateLightSensor };

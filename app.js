@@ -1,11 +1,8 @@
-import { loadSensors, updateLightSensor, createSensor  } from "./apifunctions";
+import { loadSensors, createSensor  } from "./apifunctions.js";
 
 
 
-const API = "http://localhost:3000/api/sensors";
-
-
-submitBtn = document.getElementById("formSubmit");
+const submitBtn = document.getElementById("formSubmit");
 
 submitBtn.addEventListener("click", createSensor);
 
