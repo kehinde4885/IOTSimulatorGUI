@@ -73,5 +73,4 @@ async function updateLightSensor(id) {
   loadSensors();
 }
 
-
 export { loadSensors, deleteSensor, createSensor, updateLightSensor };

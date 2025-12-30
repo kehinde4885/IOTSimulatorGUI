@@ -8,6 +8,10 @@ button {
   margin: 5px;
 }
 
+p {
+  margin: 0;
+}
+
 h1 {
   font-weight: normal;
 }
@@ -86,4 +90,69 @@ h1 {
 
 .sensor-button.on {
   background-color: #72f57b;
+}
+
+.temperatureSensor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding: 8px;
+  background-color: #e3f0f3;
+  border-radius: 0;
+  max-width: fit-content;
+}
+
+.temperatureSensor .info-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+
+.temperatureSensor .info-right {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.temperatureSensor .sensor-info {
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
+  font-family: "Abel", sans-serif;
+  color: #000;
+  min-width: 180px;
+}
+
+.temperatureSensor .sensor-id {
+  font-size: 16px;
+  margin: 0;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.temperatureSensor .sensor-type {
+  font-size: 12px;
+  margin: 0;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.temperatureSensor .sensor-value {
+  font-size: 12px;
+  margin: 0;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.temperatureSensor .sensor-interval {
+  font-size: 8px;
+  margin: 0;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.temperatureSensor .change-button {
+  background-color: #727df5;
 }
