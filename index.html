@@ -12,16 +12,24 @@
     <title>IoT Simulator</title>
   </head>
   <body>
-    <h1>IOT Sensor Dashboard</h1>
+    <h1>IOT Simulator Dashboard</h1>
 
-    <button>Create Sensor</button>
-    <button>List Sensors</button>
+    <!-- <button>Create Sensor</button>
+    <button>List Sensors</button> -->
+
+    <h2>Environment Settings</h2>
+
+    <button id="abc">Update Ambient Temp to 99</button>
+
+    <h2>Sensors</h2>
 
     <form id="createSensorForm" action="">
       <input
         id="sensorId"
         name="sensorId"
-        type="text"
+        type="number"
+        required="true"
+        min="1"
         placeholder="sensor ID" />
 
       <select name="type" id="type">
@@ -33,14 +41,45 @@
         type="number"
         name="interval"
         id="interval"
+        min="1"
         placeholder="Interval (ms)" />
-      <button id="formSubmit">Create</button>
+      <button type="submit" id="sensorFormSubmit">Create</button>
     </form>
-
-    <h2>Existing Sensors</h2>
     <div class="sensorList" id="sensorList"></div>
 
-    <button id="abc">Update Ambient Temp to 99</button>
+    <h2>Devices</h2>
+
+    <form id="createDeviceForm" action="">
+      <input
+        id="deviceId"
+        name="deviceId"
+        type="number"
+        required
+        min="1"
+        placeholder="Device ID" />
+
+      <input
+        type="number"
+        name="interval"
+        id="interval"
+        required
+        min="1"
+        placeholder="Interval (ms)" />
+
+      <label
+        >Choose a Temp Sensor:
+
+        <select name="sensorId" id="tempSensorSelect" required>
+          <option value="">Loading Sensors ....</option>
+        </select>
+      </label>
+
+      <button type="submit" id="deviceFormSubmit">CreateHVAC</button>
+    </form>
+
+    <div class="deviceList" id="deviceList">
+     
+    </div>
   </body>
 
   <script src="./app.js" type="module"></script>

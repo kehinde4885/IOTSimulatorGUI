@@ -1,4 +1,10 @@
-import { loadSensors, createSensor } from "./apifunctions.js";
+import {
+  loadSensors,
+  createSensor,
+  createDevice,
+  loadDevices,
+  loadTemperatureSensors,
+} from "./apifunctions.js";
 
 const btn = document.getElementById("abc");
 
@@ -11,8 +17,17 @@ btn.addEventListener("click", async () => {
   });
 });
 
-const submitBtn = document.getElementById("formSubmit");
+const sensorSubmitBtn = document.getElementById("sensorFormSubmit");
 
-submitBtn.addEventListener("click", createSensor);
+sensorSubmitBtn.addEventListener("click", createSensor);
+
+const deviceSubmitBtn = document.getElementById("deviceFormSubmit");
+
+deviceSubmitBtn.addEventListener("click", createDevice);
+
 
 loadSensors();
+
+loadDevices();
+
+loadTemperatureSensors();

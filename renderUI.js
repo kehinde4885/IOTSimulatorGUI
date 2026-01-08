@@ -58,7 +58,7 @@ class TemperatureSensorUI {
     sensorInfo.className = "sensor-info";
     buttonWrapper.className = "sensor-actions";
     button.className = "sensor-button";
-    button2.classList.add("sensor-button" , "change-button");
+    button2.classList.add("sensor-button", "change-button");
 
     tempSensordiv.appendChild(sensorInfo);
     tempSensordiv.appendChild(buttonWrapper);
@@ -87,6 +87,39 @@ class TemperatureSensorUI {
   }
 }
 
+class HVACDeviceUI {
+  render(device) {
+    const deviceDiv = document.createElement("div");
+    const infoDiv = document.createElement("div");
+    const button = document.createElement("button");
+
+    infoDiv.className = "info";
+    deviceDiv.className = "hvac-card";
+    button.className = "button";
+
+    infoDiv.innerHTML = `<div class="info-left">
+            <p class="id">HVAC ${device.id}</p>
+            <p class="status">Status: ${
+              device.mode === "OFF" ? "OFF" : "ON"
+            }</p>
+            <p class="temp">Target Temp: ${device.targetTemp}°C</p>
+          </div>
+          <div class="info-right">
+            <p class="mode">MODE: ${device.mode}</p>
+          </div>`;
+
+    deviceDiv.appendChild(infoDiv);
+    deviceDiv.appendChild(button);
+
+    button.innerHTML = "edit";
+    button.addEventListener("click", () => {
+      console.log("Edit HVAC");
+    });
+
+    return deviceDiv;
+  }
+}
+
 export default function getSensorUIStrategy(type) {
   switch (type) {
     case "Light":
@@ -97,3 +130,12 @@ export default function getSensorUIStrategy(type) {
       return null;
   }
 }
+
+function getDeviceUIStrategy(type) {
+  switch (type) {
+    case "HVAC":
+      return new HVACDeviceUI();
+  }
+}
+
+export { getDeviceUIStrategy };
