@@ -45,11 +45,15 @@ async function createSensor(e) {
     console.log(key, value);
   }
 
+  //formData.get uses the name of the input field
   const sensorId = formData.get("sensorId");
-  const type = formData.get("type");
+  const type = formData.get("sensorType");
   const interval = formData.get("interval");
 
-  console.log(JSON.stringify({ sensorId, type, interval }));
+  console.log(
+    "Sending to Server",
+    JSON.stringify({ sensorId, type, interval })
+  );
 
   await fetch(`${SensorsAPI}/create`, {
     method: "POST",
@@ -180,6 +184,36 @@ async function loadTemperatureSensors() {
     console.error("Failled to load temperature sensors:", error);
   }
 }
+
+async function loadSensorTypes() {
+  try {
+    const data = await fetch(`${SensorsAPI}/types`);
+    const sensorTypes = await data.json();
+
+    console.log("Types", sensorTypes);
+
+    const select = document.getElementById("sensorType");
+
+    if (sensorTypes.length === 0) {
+      const option = document.createElement("option");
+      option.textContent = "No sensor Types registered";
+      option.disabled = true;
+      select.appendChild(option);
+      return;
+    }
+
+    for (const type of sensorTypes) {
+      const option = document.createElement("option");
+
+      option.value = type;
+      option.textContent = type;
+      select.appendChild(option);
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export {
   loadSensors,
   deleteSensor,
@@ -188,4 +222,5 @@ export {
   createDevice,
   loadDevices,
   loadTemperatureSensors,
+  loadSensorTypes,
 };

@@ -4,6 +4,7 @@ import {
   createDevice,
   loadDevices,
   loadTemperatureSensors,
+  loadSensorTypes,
 } from "./apifunctions.js";
 
 const btn = document.getElementById("abc");
@@ -31,3 +32,5 @@ loadSensors();
 loadDevices();
 
 loadTemperatureSensors();
+
+loadSensorTypes()
