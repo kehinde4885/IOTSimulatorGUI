@@ -32,9 +32,7 @@
         min="1"
         placeholder="sensor ID" />
 
-      <select name="sensorType" id="sensorType">
-        
-      </select>
+      <select name="sensorType" id="sensorType"></select>
 
       <input
         type="number"
@@ -48,7 +46,46 @@
 
     <h2>Devices</h2>
 
-    <form id="createDeviceForm" action="">
+    <form id="deviceForm">
+      <label>Create Device</label>
+      <select id="deviceType"></select>
+
+      <div data-field="id">
+        <label for="">ID</label>
+        <input
+          id="deviceId"
+          name="deviceId"
+          type="number"
+          required
+          min="1"
+          placeholder="Device ID" />
+      </div>
+
+      <div data-field="interval">
+        <label for="">interval</label>
+
+        <input
+          type="number"
+          name="interval"
+          id="interval"
+          required
+          min="1"
+          placeholder="Interval (ms)" />
+      </div>
+
+      <div data-field="tempSensorId">
+        <label for="tempSensorId">Temp Sensor ID:</label>
+        <select name="tempSensorId" id="tempSensorIdSelect" required>
+          <option value="">Loading Sensors ....</option>
+        </select>
+      </div>
+
+      <button type="submit" id="deviceFormSubmit">Create Device</button>
+    </form>
+
+  
+<!-- 
+     <form id="createFANForm" action="">
       <input
         id="deviceId"
         name="deviceId"
@@ -74,7 +111,7 @@
       </label>
 
       <button type="submit" id="deviceFormSubmit">CreateHVAC</button>
-    </form>
+    </form>  -->
 
     <div class="deviceList" id="deviceList"></div>
   </body>

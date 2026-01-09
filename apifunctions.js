@@ -27,113 +27,6 @@ async function loadSensors() {
   });
 }
 
-async function createSensor(e) {
-  e.preventDefault();
-
-  const form = document.getElementById("createSensorForm");
-
-  //validate form
-  if (!form.checkValidity()) {
-    form.reportValidity();
-    return;
-  }
-  console.log("Creating Sensor at Server");
-
-  const formData = new FormData(form);
-
-  for (const [key, value] of formData.entries()) {
-    console.log(key, value);
-  }
-
-  //formData.get uses the name of the input field
-  const sensorId = formData.get("sensorId");
-  const type = formData.get("sensorType");
-  const interval = formData.get("interval");
-
-  console.log(
-    "Sending to Server",
-    JSON.stringify({ sensorId, type, interval })
-  );
-
-  await fetch(`${SensorsAPI}/create`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ sensorId, type, interval }),
-  });
-
-  loadSensors();
-}
-
-async function deleteSensor(id) {
-  await fetch(`${SensorsAPI}/${id}`, { method: "DELETE" });
-
-  loadSensors();
-}
-
-async function updateLightSensor(id) {
-  try {
-    const response = await fetch(`${SensorsAPI}/update/${id}`, {
-      method: "POST",
-    });
-
-    if (!response.ok) {
-      throw new Error("Sensor not founf");
-    }
-
-    const data = await response.json();
-
-    console.log("Sensor updated", data);
-  } catch (error) {
-    console.error(error.message);
-  }
-
-  loadSensors();
-}
-
-async function createDevice(e) {
-  e.preventDefault();
-
-  const form = document.getElementById("createDeviceForm");
-
-  //validate form
-  if (!form.checkValidity()) {
-    form.reportValidity();
-    return;
-  }
-
-  console.log("Sending create device data to server");
-
-  const formData = new FormData(form);
-
-  for (const [key, value] of formData.entries()) {
-    console.log(key, value);
-  }
-
-  const deviceId = formData.get("deviceId");
-  const interval = formData.get("interval");
-  const TempSensorId = formData.get("sensorId");
-
-  const body = { deviceId, interval, TempSensorId };
-
-  console.log(JSON.stringify(body));
-
-  try {
-    const response = await fetch(`${DevicesAPI}/create`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-
-    const result = await response.json();
-
-    console.log("HVAC Created:", result);
-  } catch (error) {
-    console.error(error);
-  }
-
-  loadDevices();
-}
-
 async function loadDevices() {
   const res = await fetch(`${DevicesAPI}`);
   const devices = await res.json();
@@ -153,12 +46,30 @@ async function loadDevices() {
   });
 }
 
+async function loadDeviceTypes() {
+  const result = await fetch(`${DevicesAPI}/types`);
+  const deviceTypes = await result.json();
+
+  const deviceTypeList = document.getElementById("deviceType");
+
+  for (const deviceType of deviceTypes) {
+    const option = document.createElement("option");
+    option.textContent = deviceType;
+    option.value = deviceType;
+    deviceTypeList.appendChild(option);
+  }
+
+  //create and Fire a custom Event
+  const event = new Event("deviceTypes:loaded")
+  window.dispatchEvent(event)
+}
+
 async function loadTemperatureSensors() {
   try {
     const response = await fetch(SensorsAPI);
     const sensors = await response.json();
 
-    const select = document.getElementById("tempSensorSelect");
+    const select = document.getElementById("tempSensorIdSelect");
     select.innerHTML = "";
 
     const tempSensors = sensors.filter(
@@ -210,8 +121,125 @@ async function loadSensorTypes() {
       select.appendChild(option);
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
+}
+
+async function createSensor(e) {
+  e.preventDefault();
+
+  const form = document.getElementById("createSensorForm");
+
+  //validate form
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
+  console.log("Creating Sensor at Server");
+
+  const formData = new FormData(form);
+
+  for (const [key, value] of formData.entries()) {
+    console.log(key, value);
+  }
+
+  //formData.get uses the name of the input field
+  const sensorId = formData.get("sensorId");
+  const type = formData.get("sensorType");
+  const interval = formData.get("interval");
+
+  console.log(
+    "Sending to Server",
+    JSON.stringify({ sensorId, type, interval })
+  );
+
+  await fetch(`${SensorsAPI}/create`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ sensorId, type, interval }),
+  });
+
+  loadSensors();
+}
+
+//
+async function createDevice(e) {
+  e.preventDefault();
+
+  const form = document.getElementById("createHVACForm");
+
+  //validate form
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
+
+  console.log("Sending create device data to server");
+
+  const formData = new FormData(form);
+
+  for (const [key, value] of formData.entries()) {
+    console.log(key, value);
+  }
+
+  const deviceId = formData.get("deviceId");
+  const interval = formData.get("interval");
+  const TempSensorId = formData.get("sensorId");
+
+  const body = { deviceId, interval, TempSensorId };
+
+  console.log(JSON.stringify(body));
+
+  try {
+    const response = await fetch(`${DevicesAPI}/create`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    const result = await response.json();
+
+    console.log("HVAC Created:", result);
+  } catch (error) {
+    console.error(error);
+  }
+
+  loadDevices();
+}
+
+async function deleteSensor(id) {
+  await fetch(`${SensorsAPI}/${id}`, { method: "DELETE" });
+
+  loadSensors();
+}
+
+async function updateLightSensor(id) {
+  try {
+    const response = await fetch(`${SensorsAPI}/update/${id}`, {
+      method: "POST",
+    });
+
+    if (!response.ok) {
+      throw new Error("Sensor not founf");
+    }
+
+    const data = await response.json();
+
+    console.log("Sensor updated", data);
+  } catch (error) {
+    console.error(error.message);
+  }
+
+  loadSensors();
+}
+
+async function updateEnv() {
+  await fetch(`http://localhost:3000/api/env/update`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 }
 
 export {
@@ -223,4 +251,6 @@ export {
   loadDevices,
   loadTemperatureSensors,
   loadSensorTypes,
+  loadDeviceTypes,
+  updateEnv
 };
