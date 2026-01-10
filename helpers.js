@@ -1,7 +1,5 @@
-
 import { DEVICE_DEFINATIONS } from "./formSchema.js";
 const deviceForm = document.getElementById("deviceForm");
-
 
 function updateFormFields(type) {
   //get the array of fields from schema
@@ -15,11 +13,14 @@ function updateFormFields(type) {
     //store the value of the data-field attribute
     const fieldName = div.dataset.field;
 
+    if (allowedFields.includes(fieldName)) {
+      div.querySelectorAll("input").forEach((input) => (input.required = true));
+    }
+
     //change style of div depending on
     //whether it is in the allowed fields array
     div.style.display = allowedFields.includes(fieldName) ? "block" : "none";
   });
 }
 
-
-export {updateFormFields}
+export { updateFormFields };

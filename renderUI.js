@@ -1,4 +1,4 @@
-import { updateLightSensor, deleteSensor } from "./apifunctions.js";
+import { updateLightSensor, deleteSensor , deleteDevice } from "./apifunctions.js";
 
 class LightSensorUI {
   render(sensor) {
@@ -87,7 +87,6 @@ class TemperatureSensorUI {
   }
 }
 
-
 //refactor
 class DoorSensorUI {
   render(sensor) {
@@ -135,7 +134,6 @@ class DoorSensorUI {
   }
 }
 
-
 class HVACDeviceUI {
   render(device) {
     const deviceDiv = document.createElement("div");
@@ -169,6 +167,54 @@ class HVACDeviceUI {
   }
 }
 
+//****** */
+
+class FANDeviceUI {
+  render(device) {
+    const fanDeviceDiv = document.createElement("div");
+    const deviceInfo = document.createElement("div");
+    const buttonWrapper = document.createElement("div");
+    const button = document.createElement("button");
+    const button2 = document.createElement("button");
+
+    fanDeviceDiv.className = "lightSensor";
+    deviceInfo.className = "sensor-info";
+    buttonWrapper.className = "sensor-actions";
+    button.className = "sensor-button";
+    button2.className = "sensor-button";
+
+    fanDeviceDiv.appendChild(deviceInfo);
+    fanDeviceDiv.appendChild(buttonWrapper);
+    buttonWrapper.appendChild(button2);
+    buttonWrapper.appendChild(button);
+
+    deviceInfo.innerHTML = `     <div class="device-info">
+        <p class="device-id">Device ${device.id}</p>
+        <p class="device-type">Type: ${device.type}</p>
+        <p class="device-status">Status: ${device.isOn ? "ON" : "OFF"}</p>
+        <p class="device-interval">Interval: ${device.interval}ms</p>
+      </div>`;
+
+    button.addEventListener("click", () => {
+      deleteDevice(device.id);
+    });
+    button.innerHTML = `Delete`;
+
+    button2.addEventListener("click", () => {
+      //updateLightSensor(device.sensorId);
+    });
+
+    if (device.isOn) {
+      button2.innerHTML = "Turn OFF";
+    } else {
+      button2.classList.add("on");
+      button2.innerHTML = "Turn ON";
+    }
+
+    return fanDeviceDiv;
+  }
+}
+
 export default function getSensorUIStrategy(type) {
   switch (type) {
     case "Light":
@@ -176,7 +222,7 @@ export default function getSensorUIStrategy(type) {
     case "Temperature":
       return new TemperatureSensorUI();
     case "Door":
-      return new DoorSensorUI()
+      return new DoorSensorUI();
     default:
       return null;
   }
@@ -186,6 +232,8 @@ function getDeviceUIStrategy(type) {
   switch (type) {
     case "HVAC":
       return new HVACDeviceUI();
+    case "FAN":
+      return new FANDeviceUI();
   }
 }
 

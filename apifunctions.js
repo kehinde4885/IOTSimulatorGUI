@@ -1,5 +1,6 @@
 import getSensorUIStrategy from "./renderUI.js";
 import { getDeviceUIStrategy } from "./renderUI.js";
+import { DEVICE_DEFINATIONS } from "./formSchema.js";
 
 const SensorsAPI = "http://localhost:3000/api/sensors";
 
@@ -12,7 +13,7 @@ async function loadSensors() {
   const sensors = await res.json();
 
   //log sensor array
-  console.log(sensors);
+  //console.log(sensors);
 
   //Clear existing html
   const sensorList = document.getElementById("sensorList");
@@ -31,6 +32,7 @@ async function loadDevices() {
   const res = await fetch(`${DevicesAPI}`);
   const devices = await res.json();
 
+  console.log("loading devices");
   console.log(devices);
 
   //Clear existing html
@@ -60,8 +62,8 @@ async function loadDeviceTypes() {
   }
 
   //create and Fire a custom Event
-  const event = new Event("deviceTypes:loaded")
-  window.dispatchEvent(event)
+  const event = new Event("deviceTypes:loaded");
+  window.dispatchEvent(event);
 }
 
 async function loadTemperatureSensors() {
@@ -101,7 +103,7 @@ async function loadSensorTypes() {
     const data = await fetch(`${SensorsAPI}/types`);
     const sensorTypes = await data.json();
 
-    console.log("Types", sensorTypes);
+    //console.log("Types", sensorTypes);
 
     const select = document.getElementById("sensorType");
 
@@ -166,7 +168,7 @@ async function createSensor(e) {
 async function createDevice(e) {
   e.preventDefault();
 
-  const form = document.getElementById("createHVACForm");
+  const form = document.getElementById("deviceForm");
 
   //validate form
   if (!form.checkValidity()) {
@@ -178,15 +180,26 @@ async function createDevice(e) {
 
   const formData = new FormData(form);
 
+  const body = {};
+
+  const allowedFields = DEVICE_DEFINATIONS[formData.get("deviceType")].fields;
+
   for (const [key, value] of formData.entries()) {
-    console.log(key, value);
+    if (allowedFields.includes(key)) {
+      body[key] = value;
+    }
   }
 
-  const deviceId = formData.get("deviceId");
-  const interval = formData.get("interval");
-  const TempSensorId = formData.get("sensorId");
+  // for (const [key, value] of formData.entries()) {
+  //   console.log(key, value);
+  // }
 
-  const body = { deviceId, interval, TempSensorId };
+  // const type = formData.get("deviceType");
+  // const deviceId = formData.get("deviceId");
+  // const interval = formData.get("interval");
+  // const TempSensorId = formData.get("tempSensorId");
+
+  // const body = { type, deviceId, interval, TempSensorId };
 
   console.log(JSON.stringify(body));
 
@@ -211,6 +224,12 @@ async function deleteSensor(id) {
   await fetch(`${SensorsAPI}/${id}`, { method: "DELETE" });
 
   loadSensors();
+}
+
+async function deleteDevice(id) {
+  await fetch(`${DevicesAPI}/${id}`, { method: "DELETE" });
+
+  loadDevices();
 }
 
 async function updateLightSensor(id) {
@@ -252,5 +271,6 @@ export {
   loadTemperatureSensors,
   loadSensorTypes,
   loadDeviceTypes,
-  updateEnv
+  updateEnv,
+  deleteDevice
 };

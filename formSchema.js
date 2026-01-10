@@ -1,11 +1,11 @@
 const DEVICE_DEFINATIONS = {
   HVAC: {
     label: "HVAC",
-    fields: ["id", "tempSensorId", "interval"],
+    fields: ["deviceId", "deviceType","tempSensorId", "interval"],
   },
   FAN: {
     label: "FAN",
-    fields: ["id", "interval"],
+    fields: ["deviceId","deviceType", "interval"],
   },
 };
 
