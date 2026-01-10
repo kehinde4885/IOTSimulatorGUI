@@ -23,6 +23,8 @@ h1 {
   margin-top: 20px;
 }
 
+/*  */
+
 .lightSensor {
   display: flex;
   align-items: center;
@@ -91,6 +93,8 @@ h1 {
 .sensor-button.on {
   background-color: #72f57b;
 }
+
+/*  */
 
 .temperatureSensor {
   display: flex;
@@ -170,6 +174,8 @@ h1 {
   background-color: #727df5;
 }
 
+/*  */
+
 .hvac-card {
   background-color: #a0cc7a;
   width: fit-content;
@@ -181,21 +187,20 @@ h1 {
   font-family: "Abel", sans-serif;
 }
 
-.hvac-card .info{
+.hvac-card .info {
   display: flex;
   gap: 1.5rem;
-
 }
 
 .hvac-card .id {
   font-family: "Abel", sans-serif;
 }
 
-.hvac-card .status{
+.hvac-card .status {
   font-family: "Abel", sans-serif;
 }
 
-.hvac-card .temp{
+.hvac-card .temp {
   font-family: "Abel", sans-serif;
 }
 
@@ -211,4 +216,79 @@ h1 {
   font-size: 8px;
   cursor: pointer;
   white-space: nowrap;
+}
+
+.hvac-card .button.on {
+  background-color: #72f57b;
+}
+
+/*  */
+
+.fanDevice {
+  display: flex;
+  align-items: center;
+  gap: 38px;
+  padding: 8px;
+  background-color: #f3eded;
+  border-radius: 0;
+  max-width: fit-content;
+}
+
+.fanDevice .device-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: "Abel", sans-serif;
+  color: #000;
+}
+
+.fanDevice .device-id {
+  font-size: 16px;
+  margin: 0;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.fanDevice .device-type {
+  font-size: 12px;
+  margin: 0;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.fanDevice .device-status {
+  font-size: 12px;
+  margin: 0;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.fanDevice .device-interval {
+  font-size: 8px;
+  margin: 0;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.fanDevice .device-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fanDevice .device-button {
+  background-color: #f57272;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 4px;
+  font-family: "Overpass", sans-serif;
+  font-weight: 900;
+  font-size: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.device-button.on {
+  background-color: #72f57b;
 }

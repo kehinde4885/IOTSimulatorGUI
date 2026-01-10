@@ -261,6 +261,26 @@ async function updateEnv() {
   });
 }
 
+async function toggleDevicePower(id) {
+  try {
+    const response = await fetch(`${DevicesAPI}/toggleSwitch/${id}`, {
+      method: "POST",
+    });
+
+    if (!response.ok) {
+      throw new Error("device not found");
+    }
+
+    const data = await response.json();
+
+    console.log("Device updated", data);
+  } catch (error) {
+    console.error(error.message);
+  }
+
+  loadDevices()
+}
+
 export {
   loadSensors,
   deleteSensor,
@@ -272,5 +292,6 @@ export {
   loadSensorTypes,
   loadDeviceTypes,
   updateEnv,
-  deleteDevice
+  deleteDevice,
+  toggleDevicePower
 };

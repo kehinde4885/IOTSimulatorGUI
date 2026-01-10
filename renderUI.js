@@ -1,4 +1,9 @@
-import { updateLightSensor, deleteSensor , deleteDevice } from "./apifunctions.js";
+import {
+  updateLightSensor,
+  deleteSensor,
+  deleteDevice,
+  toggleDevicePower,
+} from "./apifunctions.js";
 
 class LightSensorUI {
   render(sensor) {
@@ -138,11 +143,19 @@ class HVACDeviceUI {
   render(device) {
     const deviceDiv = document.createElement("div");
     const infoDiv = document.createElement("div");
+    const buttonWrapper = document.createElement("div");
     const button = document.createElement("button");
+    const button2 = document.createElement("button");
 
     infoDiv.className = "info";
     deviceDiv.className = "hvac-card";
     button.className = "button";
+    button2.className = "button";
+
+    buttonWrapper.appendChild(button);
+    buttonWrapper.appendChild(button2);
+    deviceDiv.appendChild(infoDiv);
+    deviceDiv.appendChild(buttonWrapper);
 
     infoDiv.innerHTML = `<div class="info-left">
             <p class="id">HVAC ${device.id}</p>
@@ -155,13 +168,18 @@ class HVACDeviceUI {
             <p class="mode">MODE: ${device.mode}</p>
           </div>`;
 
-    deviceDiv.appendChild(infoDiv);
-    deviceDiv.appendChild(button);
+    button.innerHTML = "DELETE";
+    button.addEventListener("click", () => deleteDevice(device.id));
 
-    button.innerHTML = "edit";
-    button.addEventListener("click", () => {
-      console.log("Edit HVAC");
+    button2.innerHTML = "Turn Off";
+    button2.addEventListener("click", () => {
+      toggleDevicePower(device.id);
     });
+
+    if (!device.isOn) {
+      button2.innerHTML = "Turn On";
+      button2.classList.add("on");
+    }
 
     return deviceDiv;
   }
@@ -177,11 +195,11 @@ class FANDeviceUI {
     const button = document.createElement("button");
     const button2 = document.createElement("button");
 
-    fanDeviceDiv.className = "lightSensor";
-    deviceInfo.className = "sensor-info";
-    buttonWrapper.className = "sensor-actions";
-    button.className = "sensor-button";
-    button2.className = "sensor-button";
+    fanDeviceDiv.className = "fanDevice";
+    deviceInfo.className = "device-info";
+    buttonWrapper.className = "device-actions";
+    button.className = "device-button";
+    button2.className = "device-button";
 
     fanDeviceDiv.appendChild(deviceInfo);
     fanDeviceDiv.appendChild(buttonWrapper);
@@ -189,8 +207,7 @@ class FANDeviceUI {
     buttonWrapper.appendChild(button);
 
     deviceInfo.innerHTML = `     <div class="device-info">
-        <p class="device-id">Device ${device.id}</p>
-        <p class="device-type">Type: ${device.type}</p>
+        <p class="device-id">${device.type} ${device.id}</p>
         <p class="device-status">Status: ${device.isOn ? "ON" : "OFF"}</p>
         <p class="device-interval">Interval: ${device.interval}ms</p>
       </div>`;
@@ -201,6 +218,7 @@ class FANDeviceUI {
     button.innerHTML = `Delete`;
 
     button2.addEventListener("click", () => {
+      toggleDevicePower(device.id);
       //updateLightSensor(device.sensorId);
     });
 
