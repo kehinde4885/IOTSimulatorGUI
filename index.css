@@ -165,7 +165,6 @@ h1 {
   background-color: #72f57b;
 }
 
-
 /*  */
 
 .temperatureSensor {
@@ -349,6 +348,78 @@ h1 {
 }
 
 .fanDevice .device-button {
+  background-color: #f57272;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 4px;
+  font-family: "Overpass", sans-serif;
+  font-weight: 900;
+  font-size: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.device-button.on {
+  background-color: #72f57b;
+}
+
+/* 
+ /* */
+
+.alarmDevice {
+  display: flex;
+  align-items: center;
+  gap: 38px;
+  padding: 8px;
+  background-color: #f3eded;
+  border-radius: 0;
+  max-width: fit-content;
+}
+
+.alarmDevice .device-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: "Abel", sans-serif;
+  color: #000;
+}
+
+.alarmDevice .device-id {
+  font-size: 16px;
+  margin: 0;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.alarmDevice .device-type {
+  font-size: 12px;
+  margin: 0;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.alarmDevice .device-status {
+  font-size: 12px;
+  margin: 0;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.alarmDevice .device-interval {
+  font-size: 8px;
+  margin: 0;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.alarmDevice .device-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.alarmDevice .device-button {
   background-color: #f57272;
   color: #000;
   border: none;

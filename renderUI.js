@@ -233,6 +233,53 @@ class HVACDeviceUI {
 
 //****** */
 
+class AlarmDeviceUI {
+  render(device) {
+    const alarmDeviceDiv = document.createElement("div");
+    const deviceInfo = document.createElement("div");
+    const buttonWrapper = document.createElement("div");
+    const button = document.createElement("button");
+    const button2 = document.createElement("button");
+
+    alarmDeviceDiv.className = "alarmDevice";
+    deviceInfo.className = "device-info";
+    buttonWrapper.className = "device-actions";
+    button.className = "device-button";
+    button2.className = "device-button";
+
+    alarmDeviceDiv.appendChild(deviceInfo);
+    alarmDeviceDiv.appendChild(buttonWrapper);
+    buttonWrapper.appendChild(button2);
+    buttonWrapper.appendChild(button);
+
+    deviceInfo.innerHTML = `     <div class="device-info">
+        <p class="device-id">${device.type} ${device.id}</p>
+        <p class="device-status">Status: ${device.isOn ? "ON" : "OFF"}</p>
+        <p class="device-interval">Interval: ${device.interval}ms</p>
+      </div>`;
+
+    button.addEventListener("click", () => {
+      deleteDevice(device.id);
+    });
+    button.innerHTML = `Delete`;
+
+    button2.addEventListener("click", () => {
+      toggleDevicePower(device.id);
+    });
+
+    if (device.isOn) {
+      button2.innerHTML = "Turn OFF";
+    } else {
+      button2.classList.add("on");
+      button2.innerHTML = "Turn ON";
+    }
+
+    return alarmDeviceDiv;
+  }
+}
+
+//****** */
+
 class FANDeviceUI {
   render(device) {
     const fanDeviceDiv = document.createElement("div");
@@ -299,6 +346,8 @@ function getDeviceUIStrategy(type) {
       return new HVACDeviceUI();
     case "FAN":
       return new FANDeviceUI();
+    case "ALARM":
+      return new AlarmDeviceUI();
   }
 }
 
