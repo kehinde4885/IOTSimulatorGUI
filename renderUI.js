@@ -1,5 +1,5 @@
 import {
-  updateLightSensor,
+  toggleSensorSwitch,
   deleteSensor,
   deleteDevice,
   toggleDevicePower,
@@ -37,7 +37,7 @@ class LightSensorUI {
     button.innerHTML = `Delete`;
 
     button2.addEventListener("click", () => {
-      updateLightSensor(sensor.sensorId);
+      toggleSensorSwitch(sensor.sensorId);
     });
 
     if (sensor.value) {
@@ -125,7 +125,7 @@ class DoorSensorUI {
     button.innerHTML = `Delete`;
 
     button2.addEventListener("click", () => {
-      updateLightSensor(sensor.sensorId);
+      toggleSensorSwitch(sensor.sensorId);
     });
 
     if (sensor.value) {
@@ -136,6 +136,52 @@ class DoorSensorUI {
     }
 
     return lightSensordiv;
+  }
+}
+
+class SmokeSensorUI {
+  render(sensor) {
+    const SmokeSensordiv = document.createElement("div");
+    const sensorInfo = document.createElement("div");
+    const buttonWrapper = document.createElement("div");
+    const button = document.createElement("button");
+    const button2 = document.createElement("button");
+
+    SmokeSensordiv.className = "smokeSensor";
+    sensorInfo.className = "sensor-info";
+    buttonWrapper.className = "sensor-actions";
+    button.className = "sensor-button";
+    button2.className = "sensor-button";
+
+    SmokeSensordiv.appendChild(sensorInfo);
+    SmokeSensordiv.appendChild(buttonWrapper);
+    buttonWrapper.appendChild(button2);
+    buttonWrapper.appendChild(button);
+
+    sensorInfo.innerHTML = `     <div class="sensor-info">
+        <p class="sensor-id">Sensor ${sensor.sensorId}</p>
+        <p class="sensor-type">Type: ${sensor.type}</p>
+        <p class="sensor-status">Status: ${sensor.value ? "ON" : "OFF"}</p>
+        <p class="sensor-interval">Interval: ${sensor.interval}ms</p>
+      </div>`;
+
+    button.addEventListener("click", () => {
+      deleteSensor(sensor.sensorId);
+    });
+    button.innerHTML = `Delete`;
+
+    button2.addEventListener("click", () => {
+      toggleSensorSwitch(sensor.sensorId);
+    });
+
+    if (sensor.value) {
+      button2.innerHTML = "Turn OFF";
+    } else {
+      button2.classList.add("on");
+      button2.innerHTML = "Turn ON";
+    }
+
+    return SmokeSensordiv;
   }
 }
 
@@ -219,7 +265,6 @@ class FANDeviceUI {
 
     button2.addEventListener("click", () => {
       toggleDevicePower(device.id);
-      //updateLightSensor(device.sensorId);
     });
 
     if (device.isOn) {
@@ -241,6 +286,8 @@ export default function getSensorUIStrategy(type) {
       return new TemperatureSensorUI();
     case "Door":
       return new DoorSensorUI();
+    case "Smoke":
+      return new SmokeSensorUI();
     default:
       return null;
   }

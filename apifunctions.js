@@ -232,9 +232,9 @@ async function deleteDevice(id) {
   loadDevices();
 }
 
-async function updateLightSensor(id) {
+async function toggleSensorSwitch(id) {
   try {
-    const response = await fetch(`${SensorsAPI}/update/${id}`, {
+    const response = await fetch(`${SensorsAPI}/toggle/${id}`, {
       method: "POST",
     });
 
@@ -273,19 +273,18 @@ async function toggleDevicePower(id) {
 
     const data = await response.json();
 
+    loadDevices();
     console.log("Device updated", data);
   } catch (error) {
     console.error(error.message);
   }
-
-  loadDevices()
 }
 
 export {
   loadSensors,
   deleteSensor,
   createSensor,
-  updateLightSensor,
+  toggleSensorSwitch,
   createDevice,
   loadDevices,
   loadTemperatureSensors,
@@ -293,5 +292,5 @@ export {
   loadDeviceTypes,
   updateEnv,
   deleteDevice,
-  toggleDevicePower
+  toggleDevicePower,
 };
