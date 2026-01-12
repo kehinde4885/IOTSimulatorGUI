@@ -7,6 +7,7 @@ import {
   loadSensorTypes,
   loadDeviceTypes,
   updateEnv,
+  loadSmokeSensors,
 } from "./apifunctions.js";
 
 import { updateFormFields } from "./helpers.js";
@@ -35,6 +36,8 @@ loadSensors();
 loadDevices();
 
 loadTemperatureSensors();
+
+loadSmokeSensors()
 
 loadSensorTypes();
 

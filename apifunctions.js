@@ -98,6 +98,36 @@ async function loadTemperatureSensors() {
   }
 }
 
+async function loadSmokeSensors() {
+  try {
+    const response = await fetch(SensorsAPI);
+    const sensors = await response.json();
+
+    const select = document.getElementById("smokeSensorIdSelect");
+    select.innerHTML = "";
+
+    const smokeSensors = sensors.filter((sensor) => sensor.type === "Smoke");
+
+    if (smokeSensors.length === 0) {
+      const option = document.createElement("option");
+      option.textContent = "No Smoke Sensors available";
+      option.disabled = true;
+      select.appendChild(option);
+      return;
+    }
+
+    for (const sensor of smokeSensors) {
+      const option = document.createElement("option");
+      option.value = sensor.sensorId;
+      //Optional:Add sensor name to textcontent
+      option.textContent = `ID: ${sensor.sensorId}`;
+      select.appendChild(option);
+    }
+  } catch (error) {
+    console.error("Failed to load Smoke sensors:", error);
+  }
+}
+
 async function loadSensorTypes() {
   try {
     const data = await fetch(`${SensorsAPI}/types`);
@@ -288,6 +318,7 @@ export {
   createDevice,
   loadDevices,
   loadTemperatureSensors,
+  loadSmokeSensors,
   loadSensorTypes,
   loadDeviceTypes,
   updateEnv,

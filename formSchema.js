@@ -9,7 +9,7 @@ const DEVICE_DEFINATIONS = {
   },
   ALARM: {
     label: "ALARM",
-    fields: ["deviceId", "deviceType", "interval"],
+    fields: ["deviceId", "deviceType", "interval", "smokeSensorId"],
   },
 };
 

@@ -245,16 +245,16 @@ class AlarmDeviceUI {
     deviceInfo.className = "device-info";
     buttonWrapper.className = "device-actions";
     button.className = "device-button";
-    button2.className = "device-button";
+ 
 
     alarmDeviceDiv.appendChild(deviceInfo);
     alarmDeviceDiv.appendChild(buttonWrapper);
-    buttonWrapper.appendChild(button2);
+  
     buttonWrapper.appendChild(button);
 
     deviceInfo.innerHTML = `     <div class="device-info">
-        <p class="device-id">${device.type} ${device.id}</p>
-        <p class="device-status">Status: ${device.isOn ? "ON" : "OFF"}</p>
+        <p class="device-id">SMOKE ${device.type} ${device.id}</p>
+        <p class="device-status">Status: ${device.isActive ? "ON" : "OFF"}</p>
         <p class="device-interval">Interval: ${device.interval}ms</p>
       </div>`;
 
@@ -263,15 +263,12 @@ class AlarmDeviceUI {
     });
     button.innerHTML = `Delete`;
 
-    button2.addEventListener("click", () => {
-      toggleDevicePower(device.id);
-    });
+ 
 
     if (device.isOn) {
-      button2.innerHTML = "Turn OFF";
+      
     } else {
-      button2.classList.add("on");
-      button2.innerHTML = "Turn ON";
+   
     }
 
     return alarmDeviceDiv;
