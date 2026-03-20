@@ -245,11 +245,10 @@ class AlarmDeviceUI {
     deviceInfo.className = "device-info";
     buttonWrapper.className = "device-actions";
     button.className = "device-button";
- 
 
     alarmDeviceDiv.appendChild(deviceInfo);
     alarmDeviceDiv.appendChild(buttonWrapper);
-  
+
     buttonWrapper.appendChild(button);
 
     deviceInfo.innerHTML = `     <div class="device-info">
@@ -263,12 +262,8 @@ class AlarmDeviceUI {
     });
     button.innerHTML = `Delete`;
 
- 
-
     if (device.isOn) {
-      
     } else {
-   
     }
 
     return alarmDeviceDiv;
@@ -322,6 +317,100 @@ class FANDeviceUI {
   }
 }
 
+//****** */
+
+class WindowDeviceUI {
+  render(device) {
+    const windowDeviceDiv = document.createElement("div");
+    const deviceInfo = document.createElement("div");
+    const buttonWrapper = document.createElement("div");
+    const button = document.createElement("button");
+    const button2 = document.createElement("button");
+
+    windowDeviceDiv.className = "fanDevice";
+    deviceInfo.className = "device-info";
+    buttonWrapper.className = "device-actions";
+    button.className = "device-button";
+    button2.className = "device-button";
+
+    windowDeviceDiv.appendChild(deviceInfo);
+    windowDeviceDiv.appendChild(buttonWrapper);
+    buttonWrapper.appendChild(button2);
+    buttonWrapper.appendChild(button);
+
+    deviceInfo.innerHTML = `     <div class="device-info">
+        <p class="device-id">${device.type} ${device.id}</p>
+        <p class="device-status">Status: ${device.isOn ? "OPEN" : "CLOSE"}</p>
+        <p class="device-interval">Interval: ${device.interval}ms</p>
+      </div>`;
+
+    button.addEventListener("click", () => {
+      deleteDevice(device.id);
+    });
+    button.innerHTML = `Delete`;
+
+    button2.addEventListener("click", () => {
+      toggleDevicePower(device.id);
+    });
+
+    if (device.isOn) {
+      button2.innerHTML = "CLOSE";
+    } else {
+      button2.classList.add("on");
+      button2.innerHTML = "OPEN";
+    }
+
+    return windowDeviceDiv;
+  }
+}
+
+//****** */
+
+class DoorDeviceUI {
+  render(device) {
+    const doorDeviceDiv = document.createElement("div");
+    const deviceInfo = document.createElement("div");
+    const buttonWrapper = document.createElement("div");
+    const button = document.createElement("button");
+    const button2 = document.createElement("button");
+
+    doorDeviceDiv.className = "fanDevice";
+    deviceInfo.className = "device-info";
+    buttonWrapper.className = "device-actions";
+    button.className = "device-button";
+    button2.className = "device-button";
+
+    doorDeviceDiv.appendChild(deviceInfo);
+    doorDeviceDiv.appendChild(buttonWrapper);
+    buttonWrapper.appendChild(button2);
+    buttonWrapper.appendChild(button);
+
+    deviceInfo.innerHTML = `     <div class="device-info">
+        <p class="device-id">${device.type} ${device.id}</p>
+        <p class="device-status">Status: ${device.isOn ? "OPEN" : "CLOSE"}</p>
+        <p class="device-interval">Interval: ${device.interval}ms</p>
+      </div>`;
+
+    button.addEventListener("click", () => {
+      deleteDevice(device.id);
+    });
+    button.innerHTML = `Delete`;
+
+    button2.addEventListener("click", () => {
+      toggleDevicePower(device.id);
+    });
+
+    if (device.isOn) {
+      button2.innerHTML = "CLOSE";
+    } else {
+      button2.classList.add("on");
+      button2.innerHTML = "OPEN";
+    }
+
+    return doorDeviceDiv;
+  }
+}
+
 export default function getSensorUIStrategy(type) {
   switch (type) {
     case "Light":
@@ -345,6 +434,10 @@ function getDeviceUIStrategy(type) {
       return new FANDeviceUI();
     case "ALARM":
       return new AlarmDeviceUI();
+    case "WINDOW":
+      return new WindowDeviceUI();
+    case "DOOR":
+      return new DoorDeviceUI();
   }
 }
 

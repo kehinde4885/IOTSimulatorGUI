@@ -11,6 +11,14 @@ const DEVICE_DEFINATIONS = {
     label: "ALARM",
     fields: ["deviceId", "deviceType", "interval", "smokeSensorId"],
   },
+  WINDOW: {
+    label: "WINDOW",
+    fields: ["deviceId", "deviceType", "interval"],
+  },
+  DOOR: {
+    label: "DOOR",
+    fields: ["deviceId", "deviceType", "interval"],
+  },
 };
 
 export { DEVICE_DEFINATIONS };

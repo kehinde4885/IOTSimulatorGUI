@@ -247,6 +247,7 @@ async function createDevice(e) {
     console.error(error);
   }
 
+  console.log("does it run load devices")
   loadDevices();
 }
 
