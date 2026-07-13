@@ -1,95 +1,13 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Abel&family=Overpass:ital,wght@0,100..900;1,100..900&display=swap"
-      rel="stylesheet" />
-    <link rel="stylesheet" href="index.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IoT Simulator</title>
+    <title>iotsimgui</title>
   </head>
   <body>
-    <h1>IOT Simulator Dashboard</h1>
-
-    <!-- <button>Create Sensor</button>
-    <button>List Sensors</button> -->
-
-    <h2>Environment Settings</h2>
-
-    <button id="abc">Update Ambient Temp to 99</button>
-
-    <h2>Sensors</h2>
-
-    <form id="createSensorForm" action="">
-      <input
-        id="sensorId"
-        name="sensorId"
-        type="number"
-        required="true"
-        min="1"
-        placeholder="sensor ID" />
-
-      <select name="sensorType" id="sensorType"></select>
-
-      <input
-        type="number"
-        name="interval"
-        id="interval"
-        min="1"
-        placeholder="Interval (ms)" />
-      <button type="submit" id="sensorFormSubmit">Create</button>
-    </form>
-    <div class="sensorList" id="sensorList"></div>
-
-    <h2>Devices</h2>
-
-    <form id="deviceForm">
-      <label>Create Device</label>
-      <select name="deviceType" id="deviceType"></select>
-
-      <div data-field="deviceId">
-        <label for="">ID</label>
-        <input
-          id="deviceId"
-          name="deviceId"
-          type="number"
-          min="1"
-          placeholder="Device ID" />
-      </div>
-
-      <div data-field="interval">
-        <label for="">interval</label>
-
-        <input
-          type="number"
-          name="interval"
-          id="interval"
-          min="1"
-          placeholder="Interval (ms)" />
-      </div>
-
-      <div data-field="tempSensorId">
-        <label for="tempSensorId">Temp Sensor ID:</label>
-        <select name="tempSensorId" id="tempSensorIdSelect">
-          <option value="">Loading Sensors ....</option>
-        </select>
-      </div>
-
-      <div data-field="smokeSensorId">
-        <label for="smokeSensorId">Smoke Sensor ID:</label>
-        <select name="smokeSensorId" id="smokeSensorIdSelect">
-          <option value="">Loading Sensors ....</option>
-        </select>
-      </div>
-
-      <button type="submit" id="deviceFormSubmit">Create Device</button>
-    </form>
-
-    <div class="deviceList" id="deviceList"></div>
+    <div id="app"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
-
-  <script src="./app.js" type="module"></script>
 </html>
