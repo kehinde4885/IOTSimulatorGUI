@@ -1,3 +1,9 @@
 {
-  "target": "react"
+  "target": "react",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
 }

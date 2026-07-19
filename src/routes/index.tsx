@@ -1,15 +1,19 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
-import { CreateEntityButton } from '../Components/CreateEntityButton.tsx'
+import { CreateEntityButton } from '../components/CreateEntityButton.tsx'
 
 export const Route = createFileRoute('/')({ component: Home })
 
 function Home() {
-  const [isEntityExisting, changeIsEntityExisting] = useState(false)
+  const [doEntityExist, changeIsEntityExisting] = useState(false)
 
   useEffect(() => {
-    getEntities().then(() => {})
+    getEntities().then((entityInfoArray) => {
+      if (entityInfoArray.length > 0) {
+        changeIsEntityExisting(true)
+      }
+    })
   }, [])
 
   return (
@@ -49,15 +53,15 @@ function Home() {
         </div>
       </header>
 
-      <CreateEntityButton />
+      {doEntityExist ? <></> : <CreateEntityButton />}
     </main>
   )
 }
 
 async function getEntities() {
-  const response = await fetch('http://127.0.0.1:3001')
+  const response = await fetch('http://127.0.0.1:3001/getEntities')
 
-  const text = await response.text()
+  const entityInfoJSON = await response.json()
 
-  console.log(text)
+  return JSON.parse(entityInfoJSON)
 }
