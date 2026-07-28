@@ -1,4 +1,4 @@
-﻿export function useDevices() {
+﻿export function useGetEntities() {
   const data1 = { name: 'A', id: '1', type: 'capability', data: 698 }
   const data2 = { name: 'B', id: '2', type: 'capability', data: 698 }
   const data3 = { name: 'C', id: '3', type: 'capability', data: 698 }

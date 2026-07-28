@@ -1,20 +1,7 @@
 ﻿// CUSTOM HOOK
 
 import { useCallback, useEffect, useState } from 'react'
-
-interface EntityOption {
-  value: string
-  label: string
-}
-
-interface EntityTypeOption extends EntityOption {
-  subtypes: EntityOption[]
-}
-
-interface EntityOptionsResponse {
-  types: EntityTypeOption[]
-  relationships: string[]
-}
+import type { EntityOptionsResponse, EntityTypeOption } from '#/types.ts'
 
 async function getEntityOptions(): Promise<EntityOptionsResponse> {
   const res = await fetch('http://localhost:3001/api/entity-options')
@@ -23,7 +10,7 @@ async function getEntityOptions(): Promise<EntityOptionsResponse> {
   return res.json()
 }
 
-export function useEntityOptions() {
+export function useGetEntityOptions() {
   const [data, setData] = useState<EntityTypeOption[]>([])
   const [rel, setRel] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(true)
