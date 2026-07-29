@@ -1,8 +1,13 @@
 ﻿import { useGetEntityOptions } from '#/lib/useGetEntityOptions.ts'
 import { useGetEntities } from '#/lib/useGetEntities.ts'
 
-import { createFormHook } from '@tanstack/react-form'
-import { fieldContext, formContext } from '../formContext.ts'
+import { createFormHook, useSelector } from '@tanstack/react-form'
+import { fieldContext, formContext, useFormContext } from '../formContext.ts'
+
+import type { FormValues } from '#/schema.ts'
+import { formSchema } from '#/schema.ts'
+
+import { useNavigate } from '@tanstack/react-router'
 
 import { NameField } from '#/components/fields/nameField.tsx'
 import { IDField } from '#/components/fields/idField.tsx'
@@ -10,7 +15,6 @@ import { typeField } from '#/components/fields/typeField.tsx'
 import { subTypeField } from '#/components/fields/subTypeField.tsx'
 import { RelationshipField } from '#/components/fields/relationshipField.tsx'
 
-import * as z from 'zod'
 import { Button } from '#/components/ui/button.tsx'
 
 const { useAppForm } = createFormHook({
@@ -26,21 +30,9 @@ const { useAppForm } = createFormHook({
   formComponents: {},
 })
 
-const formSchema = z.object({
-  id: z.number().positive(),
-  name: z.string().min(1, 'Name is required'),
-  type: z.string().min(1, 'Type is required'),
-  subtype: z.string().min(1, 'Subtype is required'),
-  relationships: z.array(
-    z.record(z.string().min(1, 'pick a relationship'), z.array(z.string())),
-  ),
-})
-
-type FormValues = z.infer<typeof formSchema>
-
 // These are the form fields in my form
 const defaultData: FormValues = {
-  id: 1,
+  id: '1',
   name: '',
   type: '',
   subtype: '',
@@ -48,17 +40,20 @@ const defaultData: FormValues = {
 }
 
 export function EntityForm() {
+  const navigate = useNavigate()
+
   const { data: entityTypes, rel: relationships } = useGetEntityOptions()
 
-  const { data: devices } = useGetEntities()
+  const { data: entities } = useGetEntities()
 
   const form = useAppForm({
     defaultValues: { ...defaultData },
     validators: {
       onChange: formSchema,
     },
-    onSubmit: ({ value }) => {
-      console.log('submitted', value)
+    onSubmit: async ({ value }) => {
+      console.log(await createEntity(value))
+      await navigate({ to: '..' })
     },
   })
 
@@ -79,6 +74,7 @@ export function EntityForm() {
           }}
           className={'space-y-5'}>
           {/* Tanstack Field Object*/}
+          <FormErrors />
 
           <form.AppField name={'id'} children={(field) => <field.IDField />} />
 
@@ -106,7 +102,7 @@ export function EntityForm() {
             children={(field) => (
               <field.RelationshipField
                 relationshipsArray={relationships}
-                devices={devices}
+                entities={entities}
               />
             )}
           />
@@ -122,5 +118,38 @@ export function EntityForm() {
         </form>
       </form.AppForm>
     </>
+  )
+}
+
+async function createEntity(values: FormValues) {
+  const response = await fetch('http://localhost:3001/createEntity', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(values),
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to create entity: ${response.statusText}`)
+  }
+
+  console.log(response)
+
+  return response.json()
+}
+
+function FormErrors() {
+  const form = useFormContext()
+  const errors = useSelector(form.store, (state) => state.errors)
+
+  if (errors.length === 0) return null
+
+  return (
+    <div className="rounded-md border border-destructive/50 bg-destructive/10 p-3 space-y-1">
+      {errors.map((error, index) => (
+        <p key={index} className="text-sm text-destructive">
+          {typeof error === 'string' ? error : JSON.stringify(error)}
+        </p>
+      ))}
+    </div>
   )
 }

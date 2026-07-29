@@ -1,26 +1,29 @@
-﻿export function useGetEntities() {
-  const data1 = { name: 'A', id: '1', type: 'capability', data: 698 }
-  const data2 = { name: 'B', id: '2', type: 'capability', data: 698 }
-  const data3 = { name: 'C', id: '3', type: 'capability', data: 698 }
-  const data4 = { name: 'D', id: '4', type: 'capability', data: 698 }
+﻿import { useCallback, useEffect, useState } from 'react'
 
-  const data = [data1, data2, data3, data4]
+async function getEntities() {
+  const res = await fetch('http://localhost:3001/getEntities')
+  if (!res.ok) throw new Error('Failed to fetch entity options')
+
+  return res.json()
+}
+
+export function useGetEntities() {
+  const [data, setData] = useState([])
+  const [error, setError] = useState<Error | null>(null)
+
+  const fetchEntities = useCallback(async () => {
+    try {
+      const res = await getEntities()
+      setData(res)
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error('Unknown Error'))
+      console.log(error)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchEntities().then()
+  }, [])
 
   return { data }
 }
-
-//
-// <Input
-//   placeholder="comma-seperated values"
-// aria-label={'ids'}
-// value={currentValues.join(',')}
-// onChange={(e) => {
-//   const values = e.target.value
-//     .split(',')
-//     .map((v) => v.trim())
-//     .filter(Boolean)
-//   subField.handleChange({
-//     [currentKey]: values,
-//   })
-// }}
-// />

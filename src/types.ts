@@ -18,20 +18,20 @@ export type subTypeFieldProps = {
   entityTypes: EntityTypeOption[]
 }
 
-interface Device {
+export interface Entity {
   name: string
   id: string
 }
 
 export type RelationshipFieldProps = {
   relationshipsArray: string[]
-  devices: Device[]
+  entities: Entity[]
 }
 
 export type RelationshipRowProps = {
   field: AnyFieldApi
   relationshipsArray: string[]
-  devices: Device[]
+  entities: Entity[]
   selectedKeys: string[]
   onRemove: () => void
 }

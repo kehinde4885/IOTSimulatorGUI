@@ -15,10 +15,12 @@ export function IDField() {
         aria-label={field.name}
         id={field.name}
         type="number"
+        min={1}
         value={field.state.value}
         onChange={(e) => {
           // set input field value
-          field.handleChange(parseInt(e.target.value))
+          const string = e.target.value.toString()
+          field.handleChange(string)
         }}
       />
       {isInvalid && <FieldError errors={field.state.meta.errors} />}

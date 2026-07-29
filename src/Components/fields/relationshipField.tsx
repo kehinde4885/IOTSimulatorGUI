@@ -27,13 +27,16 @@ import {
   Command,
 } from '@/components/ui/command'
 import { Checkbox } from '@/components/ui/checkbox'
+import { FieldError } from '#/components/ui/field.tsx'
 
 export function RelationshipField({
   relationshipsArray,
-  devices,
+  entities,
 }: RelationshipFieldProps) {
   const form = useFormContext()
   const field = useFieldContext<Record<string, string[]>[]>()
+
+  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 
   // Relationships is the subscribed value, so this component would rerender
   // whenever relationships changes/
@@ -47,6 +50,8 @@ export function RelationshipField({
     .map((item) => Object.keys(item)[0])
     .filter(Boolean)
 
+  // console.log('FR', field.state.meta.errors)
+
   return (
     <div className={'space-y-3'}>
       <Label>Relationships</Label>
@@ -57,13 +62,16 @@ export function RelationshipField({
               <RelationshipRow
                 field={subField}
                 relationshipsArray={relationshipsArray}
-                devices={devices}
+                entities={entities}
                 selectedKeys={selectedKeys}
                 onRemove={() => field.removeValue(index)}
               />
             )}
           </form.Field>
         ))}
+        {isInvalid && (
+          <FieldError errors={field.state.meta.errors}></FieldError>
+        )}
       </div>
       <Button
         type={'button'}
@@ -81,19 +89,23 @@ export function RelationshipField({
 function RelationshipRow({
   field,
   relationshipsArray,
-  devices,
+  entities,
   selectedKeys,
   onRemove,
 }: RelationshipRowProps) {
   const currentKey = Object.keys(field.state.value)[0] ?? ''
   const currentValues = field.state.value[currentKey] ?? []
 
-  // if the key has not been selected already
+  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+
+  // if the key has not been selected already,
   // and it is the current key for this subfield,
   // then it is available
   const availableRelationships = relationshipsArray.filter(
     (rel) => !selectedKeys.includes(rel) || rel == currentKey,
   )
+
+  // console.log('ROW', field.state.meta.errors)
 
   return (
     <div className={'flex items-start gap-2'}>
@@ -133,23 +145,26 @@ function RelationshipRow({
             <Command>
               <CommandInput placeholder={'Search devices...'} />
               <CommandList>
-                <CommandEmpty>No devices found</CommandEmpty>
+                <CommandEmpty>No Entities found</CommandEmpty>
                 <CommandGroup>
-                  {devices.map((device) => {
-                    const isChecked = currentValues.includes(device.id)
+                  {entities.map((entity) => {
+                    console.log(entity)
+                    const isChecked = currentValues.includes(entity.id)
 
                     return (
                       <CommandItem
-                        key={device.id}
+                        key={entity.id}
                         onSelect={() => {
                           const nextValues = isChecked
-                            ? currentValues.filter((v) => v !== device.id)
-                            : [...currentValues, device.id]
+                            ? currentValues.filter(
+                                (entId: string) => entId !== entity.id,
+                              )
+                            : [...currentValues, entity.id]
 
                           field.handleChange({ [currentKey]: nextValues })
                         }}>
                         <Checkbox checked={isChecked} className={'mr-2'} />
-                        {device.name}
+                        {entity.name}
                       </CommandItem>
                     )
                   })}
@@ -158,6 +173,9 @@ function RelationshipRow({
             </Command>
           </PopoverContent>
         </Popover>
+        {isInvalid && (
+          <FieldError errors={field.state.meta.errors}></FieldError>
+        )}
       </div>
 
       <Button
