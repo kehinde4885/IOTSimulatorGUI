@@ -21,6 +21,8 @@ export type subTypeFieldProps = {
 export interface Entity {
   name: string
   id: string
+  subtype: string
+  relationships: []
 }
 
 export type RelationshipFieldProps = {
@@ -35,3 +37,14 @@ export type RelationshipRowProps = {
   selectedKeys: string[]
   onRemove: () => void
 }
+
+export interface entityPageProps {
+  entities: Entity[]
+}
+
+export interface EntityCardProps {
+  entity: Entity
+  entityLookup: Map<string, Entity>
+}
+
+export type RelationshipGroup = Record<string, string[]>

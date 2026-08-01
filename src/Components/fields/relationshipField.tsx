@@ -36,6 +36,8 @@ export function RelationshipField({
   const form = useFormContext()
   const field = useFieldContext<Record<string, string[]>[]>()
 
+  console.log(entities)
+
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
 
   // Relationships is the subscribed value, so this component would rerender

@@ -1,34 +1,26 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+
+import { useGetEntities } from '#/lib/useGetEntities.ts'
 
 import { CreateEntityButton } from '../components/CreateEntityButton.tsx'
+import { EntitiesPage } from '#/components/EntitiesPage.tsx'
 
 export const Route = createFileRoute('/')({ component: Home })
 
 function Home() {
-  const [doEntityExist, changeDoEntityExist] = useState(false)
-
-  useEffect(() => {
-    getEntities().then((entityInfoArray) => {
-      if (entityInfoArray.length > 0) {
-        changeDoEntityExist(true)
-      }
-    })
-  }, [])
+  const { data: entities } = useGetEntities()
 
   return (
     <main className="window">
       <Header />
 
-      {doEntityExist ? <></> : <CreateEntityButton />}
+      {entities.length > 0 ? (
+        <EntitiesPage entities={entities} />
+      ) : (
+        <CreateEntityButton />
+      )}
     </main>
   )
-}
-
-async function getEntities() {
-  const response = await fetch('http://127.0.0.1:3001/getEntities')
-
-  return response.json()
 }
 
 // COMPONENTS
@@ -43,8 +35,7 @@ function Header() {
             height="18"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
-            style={{ flexShrink: '0' }}
-          >
+            style={{ flexShrink: '0' }}>
             <path
               d="M4 10.5L12 4L20 10.5V19C20 19.552 19.552 20 19 20H5C4.448 20 4 19.552 4 19V10.5Z"
               fill="none"

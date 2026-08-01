@@ -1,4 +1,5 @@
 ﻿import { useCallback, useEffect, useState } from 'react'
+import type { Entity } from '#/types.ts'
 
 async function getEntities() {
   const res = await fetch('http://localhost:3001/getEntities')
@@ -8,12 +9,12 @@ async function getEntities() {
 }
 
 export function useGetEntities() {
-  const [data, setData] = useState([])
+  const [data, setData] = useState<Entity[]>([])
   const [error, setError] = useState<Error | null>(null)
 
   const fetchEntities = useCallback(async () => {
     try {
-      const res = await getEntities()
+      const res: Entity[] = await getEntities()
       setData(res)
     } catch (err) {
       setError(err instanceof Error ? err : new Error('Unknown Error'))
