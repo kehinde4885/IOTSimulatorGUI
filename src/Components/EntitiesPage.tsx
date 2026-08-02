@@ -1,8 +1,12 @@
 ﻿import { EntityCard } from '#/components/EntityCard.tsx'
-import type { Entity, entityPageProps } from '#/types.ts'
+import type { Entity } from '#/types.ts'
 import { useMemo } from 'react'
+import { useGetEntities } from '#/lib/useGetEntities.ts'
 
-export function EntitiesPage({ entities }: entityPageProps) {
+export function EntitiesPage() {
+  console.log('Rendering Entities Page')
+  const { data: entities, fetchEntities } = useGetEntities()
+
   const entityLookup = useMemo(() => buildEntityLookup(entities), [entities])
 
   return (
@@ -20,6 +24,7 @@ export function EntitiesPage({ entities }: entityPageProps) {
             key={entity.id}
             entity={entity}
             entityLookup={entityLookup}
+            fetchEntities={fetchEntities}
           />
         ))}
       </div>
@@ -28,5 +33,6 @@ export function EntitiesPage({ entities }: entityPageProps) {
 }
 
 function buildEntityLookup(entities: Entity[]): Map<string, Entity> {
+  console.log('building Entities Lookup')
   return new Map(entities.map((entity) => [entity.id, entity]))
 }

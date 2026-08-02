@@ -1,7 +1,6 @@
 ﻿import type { EntityCardProps, RelationshipGroup } from '#/types.ts'
-import { TrashIcon, Check, Copy, Link2 } from 'lucide-react'
-
-import { TrashIcon2 } from '#/components/TrashIcon.tsx'
+import { Check, Copy, Link2, TrashIcon } from 'lucide-react'
+import { deleteEntity } from '#/lib/useDeleteEntity.ts'
 
 import { useState } from 'react'
 import {
@@ -15,11 +14,11 @@ import { Button } from '#/components/ui/button.tsx'
 
 const DOT_CAP = 5
 
-export function EntityCard({ entity, entityLookup }: EntityCardProps) {
-  console.log(entity)
-
-  console.log(entityLookup)
-
+export function EntityCard({
+  entity,
+  entityLookup,
+  fetchEntities,
+}: EntityCardProps) {
   const [copied, setCopied] = useState(false)
 
   const totalCount = countRelationships(entity.relationships)
@@ -28,6 +27,13 @@ export function EntityCard({ entity, entityLookup }: EntityCardProps) {
     await navigator.clipboard.writeText(entity.id)
     setCopied(true)
     setTimeout(() => setCopied(false), 1500)
+  }
+
+  const handleDelete = () => {
+    deleteEntity(entity.id).then(() => {
+      console.log('deleted Entity')
+      fetchEntities().then()
+    })
   }
 
   return (
@@ -95,11 +101,12 @@ export function EntityCard({ entity, entityLookup }: EntityCardProps) {
       </CardFooter>
 
       <Button
+        onClick={() => handleDelete()}
         aria-label={'Delete'}
         className="absolute right-1"
         variant="outline"
         size="icon">
-        <TrashIcon2></TrashIcon2>
+        <TrashIcon></TrashIcon>
       </Button>
     </Card>
   )

@@ -1,24 +1,19 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { useGetEntities } from '#/lib/useGetEntities.ts'
-
 import { CreateEntityButton } from '../components/CreateEntityButton.tsx'
 import { EntitiesPage } from '#/components/EntitiesPage.tsx'
 
 export const Route = createFileRoute('/')({ component: Home })
 
 function Home() {
-  const { data: entities } = useGetEntities()
-
+  console.log('Rendering Index Page')
   return (
     <main className="window">
       <Header />
 
-      {entities.length > 0 ? (
-        <EntitiesPage entities={entities} />
-      ) : (
-        <CreateEntityButton />
-      )}
+      <EntitiesPage />
+
+      <CreateEntityButton />
     </main>
   )
 }

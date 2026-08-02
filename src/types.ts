@@ -38,13 +38,12 @@ export type RelationshipRowProps = {
   onRemove: () => void
 }
 
-export interface entityPageProps {
-  entities: Entity[]
-}
+export interface entityPageProps {}
 
 export interface EntityCardProps {
   entity: Entity
   entityLookup: Map<string, Entity>
+  fetchEntities: () => Promise<void>
 }
 
 export type RelationshipGroup = Record<string, string[]>

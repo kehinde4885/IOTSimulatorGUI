@@ -14,6 +14,7 @@ export function useGetEntities() {
 
   const fetchEntities = useCallback(async () => {
     try {
+      console.log('Fetching Entities')
       const res: Entity[] = await getEntities()
       setData(res)
     } catch (err) {
@@ -26,5 +27,5 @@ export function useGetEntities() {
     fetchEntities().then()
   }, [])
 
-  return { data }
+  return { data, fetchEntities }
 }
