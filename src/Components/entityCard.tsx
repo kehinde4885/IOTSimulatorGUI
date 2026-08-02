@@ -11,6 +11,17 @@ import {
 } from '#/components/ui/card.tsx'
 import { Badge } from '#/components/ui/badge.tsx'
 import { Button } from '#/components/ui/button.tsx'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '#/components/ui/alert-dialog.tsx'
 
 const DOT_CAP = 5
 
@@ -21,6 +32,8 @@ export function EntityCard({
 }: EntityCardProps) {
   const [copied, setCopied] = useState(false)
 
+  const [isDeleting, setIsDeleting] = useState(false)
+
   const totalCount = countRelationships(entity.relationships)
 
   const handleCopyId = async () => {
@@ -29,16 +42,22 @@ export function EntityCard({
     setTimeout(() => setCopied(false), 1500)
   }
 
-  const handleDelete = () => {
-    deleteEntity(entity.id).then(() => {
+  const handleDelete = async () => {
+    setIsDeleting(true)
+    try {
+      await deleteEntity(entity.id)
+
+      setIsDeleting(false)
       console.log('deleted Entity')
-      fetchEntities().then()
-    })
+      await fetchEntities()
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   return (
-    <Card className="relative flex flex-col justify-between transition-shadow hover:shadow-md">
-      <CardHeader className="space-y-1.5 pb-3">
+    <Card className=" flex flex-col justify-between transition-shadow hover:shadow-md">
+      <CardHeader className="relative space-y-1.5 pb-3">
         <h3 className="truncate text-base font-semibold leading-tight">
           {entity.name}
         </h3>
@@ -52,6 +71,37 @@ export function EntityCard({
             <Copy className="h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
           )}
         </button>
+
+        <AlertDialog>
+          <AlertDialogTrigger
+            render={
+              <Button
+                disabled={isDeleting}
+                aria-label={'Delete'}
+                className="absolute right-1"
+                variant="outline"
+                size="icon">
+                <TrashIcon></TrashIcon>
+              </Button>
+            }></AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete "{entity.name}"?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This removes the entity from the simulator engine. This action
+                can't be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDelete}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </CardHeader>
 
       <CardContent className="flex-1 space-y-2.5 pb-3">
@@ -99,15 +149,6 @@ export function EntityCard({
           {totalCount} connection{totalCount === 1 ? '' : 's'}
         </span>
       </CardFooter>
-
-      <Button
-        onClick={() => handleDelete()}
-        aria-label={'Delete'}
-        className="absolute right-1"
-        variant="outline"
-        size="icon">
-        <TrashIcon></TrashIcon>
-      </Button>
     </Card>
   )
 }

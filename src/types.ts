@@ -22,7 +22,7 @@ export interface Entity {
   name: string
   id: string
   subtype: string
-  relationships: []
+  relationships: RelationshipGroup[]
 }
 
 export type RelationshipFieldProps = {
